@@ -34,6 +34,7 @@ const ShoeCard = ({
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
+        <Variant type={variant}>{variant === 'on-sale' ? 'Sale' : 'Just Release!'}</Variant>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
         </ImageWrapper>
@@ -44,6 +45,7 @@ const ShoeCard = ({
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          {typeof salePrice === 'number' && <SalePrice>{formatPrice(salePrice)}</SalePrice>}
         </Row>
       </Wrapper>
     </Link>
@@ -53,18 +55,30 @@ const ShoeCard = ({
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
+  display: block;
+  flex: 1;
+  min-width: 340px;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  display: flex;  
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  width: 100%;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
@@ -82,5 +96,21 @@ const SalePrice = styled.span`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.primary};
 `;
+
+const Variant = styled.div`
+  display: ${props => props.type === 'default' ? 'none': 'inline-block'};
+  width: fit-content;
+  font-size: 14px;
+  height: 32px;
+  color: white;
+  padding: 6px;
+  font-weight: 600;
+  border-radius: 2px;
+  background-color: ${props => props.type === 'new-release' ? COLORS.secondary : COLORS.primary};
+  position: absolute;
+  top: 16px;
+  right: -4px;
+  z-index: 1000;
+`
 
 export default ShoeCard;
